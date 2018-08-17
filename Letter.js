@@ -1,4 +1,4 @@
-var guess = process.argv[2];
+// var guess = process.argv[2];
 
 var Letter = function(letter) {
     
@@ -25,8 +25,10 @@ var Letter = function(letter) {
     }
 }
 
-console.log(guess);
+module.exports = Letter;
 
-var g = new Letter(guess);
-var newChar = g.pushChar();
-console.log(newChar);
+// console.log(guess);
+
+// var g = new Letter(guess);
+// var newChar = g.pushChar();
+// console.log(newChar);
