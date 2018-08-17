@@ -6,7 +6,7 @@ var Letter = function(letter) {
     this.character = letter;
 
     // A boolean value that stores whether that letter has been guessed yet
-    this.hasBeenGuessed = false;
+    this.hasBeenGuessed = true;
 
     // A function that returns the underlying character if the letter has been guessed, or a placeholder (like an underscore) if the letter has not been guessed
     this.toString = function() {

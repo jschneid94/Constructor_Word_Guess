@@ -9,11 +9,15 @@ var Word = function(word) {
 
     console.log(this.wordArr);
 
-    // this.returnWord = function() {
-    //     for (var i = 0; i < this.wordArr.length; i++) {
-    //         this.wordArr[i]
-    //     }
-    // }
+    this.returnWord = function() {
+        var wordie;
+        for (var i = 0; i < this.wordArr.length; i++) {
+            wordie += this.wordArr[i].toString() + " ";
+        }
+        console.log(wordie);
+    }
 }
 
-Word("hello");
+var hello = new Word("hello");
+
+hello.returnWord();
