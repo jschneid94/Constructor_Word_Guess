@@ -4,6 +4,7 @@ const Word = require("./Word");
 
 // GLOBAL VARIABLES
 var guessesLeft;
+var correctGuesses;
 var wins = 0;
 var losses = 0;
 
@@ -22,10 +23,8 @@ inquirer.prompt([
     }   
 ]).then(function(response) {
     if (response.startMenu === "Start") {
-        var randomWord = wordBank[Math.floor(Math.random() * wordBank.length)];
-        var chosenWord = new Word(randomWord);
-        chosenWord.returnWord();
-        playGame(chosenWord);
+        console.log("Great! Let's start.")
+        startGame();
     } else {
         process.exit();
     }
@@ -33,35 +32,54 @@ inquirer.prompt([
 
 function startGame() {
     guessesLeft = 10;
-    // function for choosing word
+    chooseRandomWord();
     lettersGuessed = [];
 }
 
 function chooseRandomWord() {
-    
+    console.log("I've just chosen a random word. Try to guess what it is!");
+    var randomWord = wordBank[Math.floor(Math.random() * wordBank.length)];
+    var chosenWord = new Word(randomWord);
+    chosenWord.splitWord();
+    chosenWord.generateLetters();
+    guessLetter();
 }
 
-function playGame(word) {
-    if (guessesLeft > 0) {
+function guessLetter() {
+    if (guessesLeft > 0 || correctGuesses < chosenWord.letters.length) {
         inquirer.prompt([
             {
                 name: "guess",
-                message: "Guess a letter!"
+                message: "Guess a letter: ",
+
             }
         ]).then(function(response) {
-            word.checkWord(response.guess);
-            // if(word.checkWord(response.guess)) {
-                word.returnWord();
-            // } else {
-                // guessesLeft--;
-                // console.log("Incorrect! Remaning guesses: " + )
-            // }
-            playGame(word);
+            lettersGuessed.push(response.letter);
+
+            userGuessedCorrectly = false;
+
+            for (var i = 0; i < chosenWord.length; i++) {
+                if (response.letter === chosenWord.letters[i].character && chosenWord.letters[i].hasBeenGuessed === false) {
+                    chosenWord.letters[i].hasBeenGuessed = true;
+                    userGuessedCorrectly = true;
+                    chosenWord.underscores[i] = response.letter;
+                    lettersGuessed++
+                }
+            }
+
+            chosenWord.split();
+            chosenWord.generateLetters();
+
+            if (userGuessedCorrectly) {
+                console.log("Correct!!");
+                // function to check if user won
+            } else {
+                console.log("Incorrect!")
+                console.log("You have " + guessesLeft + " guesses left.\n");
+                // function to check if user won
+            }
         });
-    } else {
-        console.log("You lose!");
-        playAgain();
-    }
+    } 
 }
 
 function playAgain() {
