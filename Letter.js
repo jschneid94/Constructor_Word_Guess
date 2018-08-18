@@ -1,5 +1,7 @@
 // var guess = process.argv[2];
 
+// var j = "j";
+
 var Letter = function(letter) {
     
     // A string value to store the underlying character for the letter
@@ -21,6 +23,7 @@ var Letter = function(letter) {
     this.check = function(char) {
         if (char === this.character) {
             this.hasBeenGuessed = true;
+            // return true;
         }
     }
 }
@@ -29,6 +32,10 @@ module.exports = Letter;
 
 // console.log(guess);
 
-// var g = new Letter(guess);
-// var newChar = g.pushChar();
-// console.log(newChar);
+// var newLetter = new Letter(j);
+// // var newChar = newLetter.toString();
+// console.log(newLetter.toString());
+
+// newLetter.check(guess);
+
+// console.log(newLetter.toString());

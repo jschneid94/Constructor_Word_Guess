@@ -3,13 +3,15 @@ const inquirer = require("inquirer");
 const Word = require("./Word");
 
 // GLOBAL VARIABLES
-var guessesLeft = 10;
+var guessesLeft;
 var wins = 0;
 var losses = 0;
 
+var lettersGuessed;
+
 var wordBank = ["test", "guess", "constructor"];
 
-console.log(wordBank);
+// console.log(wordBank);
 
 inquirer.prompt([
     {
@@ -19,19 +21,27 @@ inquirer.prompt([
         choices: ["Start", "Exit"]
     }   
 ]).then(function(response) {
-    if (response === "Start") {
+    if (response.startMenu === "Start") {
         var randomWord = wordBank[Math.floor(Math.random() * wordBank.length)];
         var chosenWord = new Word(randomWord);
+        chosenWord.returnWord();
         playGame(chosenWord);
     } else {
         process.exit();
     }
 });
 
+function startGame() {
+    guessesLeft = 10;
+    // function for choosing word
+    lettersGuessed = [];
+}
 
+function chooseRandomWord() {
+    
+}
 
 function playGame(word) {
-
     if (guessesLeft > 0) {
         inquirer.prompt([
             {
@@ -39,8 +49,13 @@ function playGame(word) {
                 message: "Guess a letter!"
             }
         ]).then(function(response) {
-            word.checkWord(response);
-            word.returnWord();
+            word.checkWord(response.guess);
+            // if(word.checkWord(response.guess)) {
+                word.returnWord();
+            // } else {
+                // guessesLeft--;
+                // console.log("Incorrect! Remaning guesses: " + )
+            // }
             playGame(word);
         });
     } else {
@@ -56,7 +71,7 @@ function playAgain() {
             message: "Play again?"
         }
     ]).then(function(response) {
-        if (response === true) {
+        if (response.playAgain === true) {
             playGame();
         } else {
             process.exit();
