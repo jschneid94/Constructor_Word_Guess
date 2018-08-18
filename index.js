@@ -1,23 +1,66 @@
 // MODULES
 const inquirer = require("inquirer");
-const prompt = require("prompt");
+const Word = require("./Word");
 
 // GLOBAL VARIABLES
 var guessesLeft = 10;
 var wins = 0;
 var losses = 0;
 
-var Prompt = function() {
+var wordBank = ["test", "guess", "constructor"];
+
+console.log(wordBank);
+
+inquirer.prompt([
+    {
+        name: "startMenu",
+        type: "list",
+        message: "Word Guess Game!",
+        choices: ["Start", "Exit"]
+    }   
+]).then(function(response) {
+    if (response === "Start") {
+        var randomWord = wordBank[Math.floor(Math.random() * wordBank.length)];
+        var chosenWord = new Word(randomWord);
+        playGame(chosenWord);
+    } else {
+        process.exit();
+    }
+});
+
+
+
+function playGame(word) {
+
     if (guessesLeft > 0) {
         inquirer.prompt([
             {
                 name: "guess",
-                message: "Guess the letter!"
+                message: "Guess a letter!"
             }
-        ]).then(function(answers) {
-
+        ]).then(function(response) {
+            word.checkWord(response);
+            word.returnWord();
+            playGame(word);
         });
+    } else {
+        console.log("You lose!");
+        playAgain();
     }
 }
 
-Prompt();
+function playAgain() {
+    inquirer.confirm([
+        {
+            name: "playAgain",
+            message: "Play again?"
+        }
+    ]).then(function(response) {
+        if (response === true) {
+            playGame();
+        } else {
+            process.exit();
+        }
+    })
+}
+
